@@ -22,15 +22,8 @@ def countFlex():
     global inFlex
     global utFlex
     global totFlex
-    '''
-    try:
-        inFlex = int(inFlex) + int(inInput.get() or 0)
-        utFlex = int(utFlex) + int(utInput.get() or 0)
-             
-    except ValueError as ingenSiffraIn:
-        messagebox.showerror("Du måste skriva en siffra", "Skriv en siffra istället")
 
-    '''
+    
 
     inFlex = int(inFlex) + int(inInput.get() or 0)
     utFlex = int(utFlex) + int(utInput.get() or 0)
@@ -43,6 +36,10 @@ def countFlex():
     totFlex = int(inFlex) - int(utFlex)
     print('TOT',totFlex, '\n')
 
+    saveFile = open('Flextid.txt','a')
+    saveFile.write('%s\n' % str(totFlex))
+    saveFile.close()
+
     if totFlex > 0:
         totFlexLabel.set('Du har %d intjänade minuter' % totFlex)
 
@@ -52,6 +49,8 @@ def countFlex():
 
     else:
         totFlexLabel.set('Du har inget sparat och inget att ta av tyvärr. \(*.*)/')
+
+    
 
 skickaKnapp = Button(master, text="Räkna", width=42, command=countFlex).pack()
 Label(master, textvariable=totFlexLabel).pack()
