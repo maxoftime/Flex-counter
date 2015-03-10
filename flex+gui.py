@@ -53,9 +53,7 @@ def countFlex():
     else:
         totFlexLabel.set('Du har inget sparat och inget att ta av tyvärr. \(*.*)/')
 
-skickaKnapp = Button(master, text="Räkna", width=42, command=countFlex)
-skickaKnapp.pack()
-
+skickaKnapp = Button(master, text="Räkna", width=42, command=countFlex).pack()
 Label(master, textvariable=totFlexLabel).pack()
 
 mainloop()
