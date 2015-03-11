@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
+import csv
 
 master = Tk()
 
@@ -16,29 +17,46 @@ totFlex = 0
 inFlex = 0
 totFlexLabel = StringVar()
 
+reader = 0
+your_list = 0
+
+listFlex = []
 
 def countFlex():       
 
     global inFlex
     global utFlex
     global totFlex
-
-    
+    global reader
+    global listFlex
 
     inFlex = int(inFlex) + int(inInput.get() or 0)
     utFlex = int(utFlex) + int(utInput.get() or 0)
     
         
-    print('IN', inFlex)
+    print('\nIN', inFlex)
     print('UT', utFlex)
-
 
     totFlex = int(inFlex) - int(utFlex)
     print('TOT',totFlex, '\n')
 
-    saveFile = open('Flextid.txt','a')
-    saveFile.write('%s\n' % str(totFlex))
-    saveFile.close()
+    
+    try:
+        with open('test.csv', 'r') as f:
+            reader = csv.reader(f)
+            listFlex = list(reader)
+    except:
+        print('1 öppningen')
+            
+    listFlex.insert(0, totFlex)
+
+
+    with open('test.csv', 'a', newline='') as csvFlexImport:
+        csvFlex = csv.writer(csvFlexImport, delimiter=',')
+        csvFlex.writerow(listFlex)
+
+    print('listFlex:', listFlex)
+    
 
     if totFlex > 0:
         totFlexLabel.set('Du har %d intjänade minuter' % totFlex)
