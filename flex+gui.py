@@ -40,7 +40,7 @@ def countFlex():
     totFlex = int(inFlex) - int(utFlex)
     print('TOT',totFlex, '\n')
 
-    
+'''    
     try:
         with open('test.csv', 'r') as f:
             reader = csv.reader(f)
@@ -57,7 +57,7 @@ def countFlex():
 
     print('listFlex:', listFlex)
     
-
+'''
     if totFlex > 0:
         totFlexLabel.set('Du har %d intjänade minuter' % totFlex)
 
