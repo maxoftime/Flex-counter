@@ -1,75 +1,68 @@
+    # Load modules and defining variables #
 from tkinter import *
 from tkinter import messagebox
-import csv
 
 master = Tk()
 
-inInput = Entry(master, width=50)
-inInput.pack()
-inInput.focus_set()
-
-utInput = Entry(master, width=50)
-utInput.pack()
-     
-
-utFlex = 0
-totFlex = 0
+outFlex = 0
 inFlex = 0
 totFlexLabel = StringVar()
 
-reader = 0
-your_list = 0
+    # Display the entry fields #
+inInput = Entry(master, width=50)
+inInput.pack()
+inInput.focus_set()
+outInput = Entry(master, width=50)
+outInput.pack()
 
-listFlex = []
+    # Read the data from Flextid.txt #
+with open('Flextid.txt', 'r') as totFlexOpen:
+    totFlexRead = totFlexOpen.read()
 
+    # Function for the calculations #
 def countFlex():       
 
+        # Load global variables #
     global inFlex
-    global utFlex
-    global totFlex
-    global reader
-    global listFlex
-
+    global outFlex
+    global totFlexRead
+    
+        # Assign the input to in and out variables #
     inFlex = int(inFlex) + int(inInput.get() or 0)
-    utFlex = int(utFlex) + int(utInput.get() or 0)
-    
-        
-    print('\nIN', inFlex)
-    print('UT', utFlex)
+    outFlex = int(outFlex) + int(outInput.get() or 0)
 
-    totFlex = int(inFlex) - int(utFlex)
-    print('TOT',totFlex, '\n')
+        # Sum up the new total flex #
+    totFlexNew = int(inFlex) - int(outFlex)    
+    totFlex = int(totFlexRead) + totFlexNew
 
-'''    
-    try:
-        with open('test.csv', 'r') as f:
-            reader = csv.reader(f)
-            listFlex = list(reader)
-    except:
-        print('1 öppningen')
-            
-    listFlex.insert(0, totFlex)
+        # Write the current totFlex to Flextid.txt #
+    with open('Flextid.txt', 'w') as totFlexOpen:
+        totFlexOpen.write(str(totFlex))
 
-
-    with open('test.csv', 'a', newline='') as csvFlexImport:
-        csvFlex = csv.writer(csvFlexImport, delimiter=',')
-        csvFlex.writerow(listFlex)
-
-    print('listFlex:', listFlex)
-    
-'''
+        # Set label to the correct value #
     if totFlex > 0:
         totFlexLabel.set('Du har %d intjänade minuter' % totFlex)
 
     elif totFlex < 0:
         totFlex = int(totFlex) * -1
-        totFlexLabel.set('Du har %d minuter att ta igen' % totFlex)
+        totFlexLabel.set('Du har %d minouter att ta igen' % totFlex)
 
     else:
-        totFlexLabel.set('Du har inget sparat och inget att ta av tyvärr. \(*.*)/')
+        totFlexLabel.set('Du har inget sparat och inget att ta av tyvärr.')
+        
 
-    
+    # Set label to a starting value, when read from Flextid.txt #
+if int(totFlexRead) > 0:
+        totFlexLabel.set('Du har %s intjänade minuter' % str(totFlexRead))
 
+elif int(totFlexRead) < 0:
+        totFlexRead = int(totFlexRead) * -1
+        totFlexLabel.set('Du har %s minuter att ta igen' % str(totFlexRead))
+
+else:
+        totFlexLabel.set('Du har inget sparat och inget att ta av tyvärr.')
+
+    # Display the button and the label #
 skickaKnapp = Button(master, text="Räkna", width=42, command=countFlex).pack()
 Label(master, textvariable=totFlexLabel).pack()
 
